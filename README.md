@@ -1,12 +1,8 @@
-# COVID-19 Chest X-ray Classification Demo
+# COVID-19 Chest X-ray Classification
 
-A Flask interface around a saved Keras model from a historical chest-radiograph classification experiment. It applies the original 128 × 128 grayscale preprocessing and displays the model's dataset class.
+A Flask inference application for a saved convolutional neural network trained to classify chest radiographs into the experiment's COVID-19 and non-COVID-19 classes. The notebook scales pixel values to 0-1, trains a Conv2D/max-pooling feature extractor with a dense classifier, dropout, and sigmoid output using Adam and binary cross-entropy, then saves the Keras model.
 
-## What is included
-
-- PNG/JPEG uploads processed in memory, limited to 8 MB
-- Lazy loading of the bundled model
-- Regression tests for upload and preprocessing behavior
+`app/` contains the Flask routes, preprocessing, and `CovidTest.h5` model. `ML_model/covid.ipynb` contains the image-directory training workflow; the notebook's source data is arranged in COVID-19 and Non-COVID-19 class folders. The app converts uploaded images to grayscale, resizes to 128 x 128, and processes PNG/JPEG uploads in memory with an 8 MB request limit. The model loads on demand.
 
 ## Run locally
 
@@ -17,21 +13,4 @@ python -m pip install -r requirements.txt
 python app/app.py
 ```
 
-## Verify
-
-python -m pip install -r requirements-dev.txt
-python -m pytest -q
-
-## Repository map
-
-`app/` contains the Flask application and inference code, including `CovidTest.h5`. `ML_model/` contains the original notebook. `tests/` covers request and preprocessing behavior.
-
-## Evidence and limitations
-
-The saved model can be exercised through the inference code; automated tests use synthetic inputs and do not establish diagnostic performance. The repository has no independently reproduced evaluation report.
-
-Historical educational demo only. Not for diagnosis, triage, treatment, isolation or other health decisions. Dataset provenance, license, class mapping and patient-separated external validation need verification. Do not upload identifiable health data to a public deployment.
-
-## License
-
-No repository license file is included. Unless the project owner adds a license, do not assume the code, data or model artifacts may be redistributed or reused. Verify third-party data and model terms separately.
+`tests/` covers request handling and preprocessing behavior.
